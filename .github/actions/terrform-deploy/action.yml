@@ -29,8 +29,8 @@ runs:
         run: |
           terraform init \
           -backend-config="bucket=5319my-terraform-state-bucket" \
-          -backend-config="key=ec2/${{inputs.env}}/terraform.statefile" \
-          -backend-config="region=${{inputs.aws-region}}" \
+          -backend-config="key=ec2/${{ inputs.env }}/terraform.statefile" \
+          -backend-config="region=${{ inputs.aws-region }}" \
           -backend-config="dynamodb_table=terraform-locks"
         shell: bash
       - name: terraform apply or distroy
