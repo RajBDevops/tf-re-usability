@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3 
       - name: Terraform Deploy Action
-        uses: ./.github/terrform-deploy
+        uses: ./.github/actions/terrform-deploy
 
         with:
           env: ${{ github.event.inputs.env }}
