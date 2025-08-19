@@ -36,13 +36,13 @@ runs:
       - name: terraform apply or distroy
         run: |
           echo "Terraform running on ${{ inputs.env }} enviorment"
-          if {{ "inputs.action" == "plan" }}; then
+          if {{ "inputs.action" = "plan" }}; then
           echo "terraform paln"
           terraform plan -var-file=${{ inputs.env }}.tfvars
-          elif {{ "inputs.action" == "apply" }}; then
+          elif {{ "inputs.action" = "apply" }}; then
           echo "terraform apply"
           terraform apply -var-file=${{ inputs.env }}.tfvars -auto-approve
-          elif {{ "inputs.action" == "distory" }}; then
+          elif {{ "inputs.action" = "distory" }}; then
           echo "terraform distory"
           terraform distroy -var-file=${{ inputs.env }}.tfvars -auto-approve
           else
