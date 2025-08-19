@@ -1,0 +1,48 @@
+name: "Terraform deploy"
+description: "depolye the terraform by re-usebility file"
+inputs:
+  env:
+    description: "choose the enviorements(dev,qa,stg)"
+    required: true
+  action:
+      description: "choose plan, apply or destroy"
+      required: true
+  aws-access-key-id:
+      required: true
+  aws-secret-access-key:
+      required: true
+  aws-region:
+      required: true
+      default: us-east-1
+runs:
+    using: "composite"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v3
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+        aws-access-key-id: ${{ inputs.aws-access-key-id }}
+        aws-secret-access-key: ${{ inputs.aws-secret-access-key }}
+        aws-region: ${{ inputs.aws-region }}
+      - name: Terraform init
+        run: |
+          terraform init \
+          -backend-config="bucket=5319my-terraform-state-bucket" \
+          -backend-config="key=ec2/${{inputs.env}}/terraform.statefile \
+          -backend-config="region=${{inputs.aws-region"}} \
+          -backend-config="dynamodb_table=terraform-locks"
+      - name: terraform apply or distroy
+        run: |
+          echo "Terraform running on ${{inputs.env}} enviorment"
+          if {{ "inputs.action" == "plan" }}; then
+          echo "terraform paln"
+          terraform plan -var-file=${{inputs.env}}.tfvars
+          elif {{ "inputs.action" == "apply" }}; then
+          echo "terraform apply"
+          terraform apply -var-file=${{inputs.env}}.tfvars -auto-approve
+          elif {{ "inputs.action" == "distory" }}; then
+          echo "terraform distory"
+          terraform distroy -var-file=${{inputs.env}}.tfvars -auto-approve
+          fi
+        
