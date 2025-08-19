@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Terraform Deploy Action
-        uses: ./.github/actions/terraform-deploy
+        uses: ./.github/actions/terrform-deploy
         with:
           env: ${{ github.event.inputs.env }}
           action: ${{ github.event.inputs.action }}
