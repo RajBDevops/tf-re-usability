@@ -32,6 +32,7 @@ runs:
           -backend-config="key=ec2/${{inputs.env}}/terraform.statefile" \
           -backend-config="region=${{inputs.aws-region}}" \
           -backend-config="dynamodb_table=terraform-locks"
+        shell: bash
       - name: terraform apply or distroy
         run: |
           echo "Terraform running on ${{inputs.env}} enviorment"
@@ -45,4 +46,5 @@ runs:
           echo "terraform distory"
           terraform distroy -var-file=${{inputs.env}}.tfvars -auto-approve
           fi
+        shell: bash
         
